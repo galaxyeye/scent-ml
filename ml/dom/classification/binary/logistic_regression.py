@@ -12,10 +12,14 @@ sns.set_style("darkgrid")
 
 import matplotlib.pyplot as plt
 
-path = 'C:\\Users\\pereg\\AppData\\Local\\Temp\\pulsar\\amazon.dataset.csv'
-samples = pd.read_csv(path, sep=',', header=None)
-labels = samples.iloc[0:, 0].values
-inputs = samples.iloc[0:, 1:].values
+path = '../../../../data/amazon.dataset.csv'
+# read data and apply one-hot encoding
+# samples = pd.read_csv(path, sep=',', header=None)
+df = pd.read_csv(path)
+df.head()
+
+inputs = df.iloc[0:, 1:].values
+labels = df.iloc[0:, 0].values
 
 X_train, X_test, y_train, y_test = train_test_split(inputs, labels, test_size=0.33, random_state=42)
 
