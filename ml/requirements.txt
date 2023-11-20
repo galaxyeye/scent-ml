@@ -6,3 +6,4 @@ tqdm
 latex
 matplotlib
 pandas
+pyspark
