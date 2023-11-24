@@ -21,6 +21,9 @@ using Logistic Regression as the base classifier.
 Run with:
   bin/spark-submit examples/src/main/python/ml/one_vs_rest_example.py
 """
+import os
+import sys
+
 # $example on$
 from pyspark.ml.classification import LogisticRegression, OneVsRest
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
@@ -28,15 +31,21 @@ from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.sql import SparkSession
 
 if __name__ == "__main__":
+    os.environ['PYSPARK_PYTHON'] = sys.executable
+    os.environ['PYSPARK_DRIVER_PYTHON'] = sys.executable
+
     spark = SparkSession \
         .builder \
         .appName("OneVsRestExample") \
         .getOrCreate()
+    sc = spark.sparkContext
+    sc.setLogLevel("INFO")
 
     # $example on$
     # load data file.
+    path = "../../../data/mllib/sample_multiclass_classification_data.txt"
     inputData = spark.read.format("libsvm") \
-        .load("data/mllib/sample_multiclass_classification_data.txt")
+        .load(path)
 
     # generate the train/test split.
     (train, test) = inputData.randomSplit([0.8, 0.2])
