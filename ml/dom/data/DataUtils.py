@@ -1,6 +1,8 @@
 from typing import Tuple
 
 import numpy as np
+from pyspark.mllib.linalg import Vectors, Vector
+from pyspark.mllib.regression import LabeledPoint
 
 
 class DataUtils:
@@ -9,7 +11,7 @@ class DataUtils:
     """
 
     @staticmethod
-    def parse_libsvm_line_to_labeled_point(line: str) -> Tuple[float, np.ndarray, np.ndarray]:
+    def parse_libsvm_line(line: str) -> Tuple[float, np.ndarray, np.ndarray]:
         """
         Parses a line in LIBSVM format into (label, indices, values).
         """
@@ -24,6 +26,18 @@ class DataUtils:
             indices[i] = int(index) - 1
             values[i] = float(value)
         return label, indices, values
+
+    @staticmethod
+    def parse_libsvm_line_to_labeled_point(size: int, line: str) -> LabeledPoint:
+        (label, indices, values) = DataUtils.parse_libsvm_line(line)
+        features = Vectors.sparse(size, indices, values)
+        return LabeledPoint(label, features.toArray())
+
+    @staticmethod
+    def parse_libsvm_line_to_label_vector(size: int, line: str) -> (str, Vector):
+        (label, indices, values) = DataUtils.parse_libsvm_line(line)
+        features = Vectors.sparse(size, indices, values)
+        return label, features
 
     @staticmethod
     def parse_libsvm_line_to_point(line: str) -> Tuple[np.ndarray, np.ndarray]:

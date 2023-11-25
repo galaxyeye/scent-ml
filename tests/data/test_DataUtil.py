@@ -36,5 +36,4 @@ class TestMLUtils(TestCase):
             DataUtils.parse_libsvm_line_to_labeled_point(r[0]), r[1], r[2]
         ))
 
-
         spark.stop()

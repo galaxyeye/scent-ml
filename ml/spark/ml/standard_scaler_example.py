@@ -27,7 +27,8 @@ if __name__ == "__main__":
         .getOrCreate()
 
     # $example on$
-    dataFrame = spark.read.format("libsvm").load("data/mllib/sample_libsvm_data.txt")
+    path = "../../../data/mllib/sample_libsvm_data.txt"
+    dataFrame = spark.read.format("libsvm").load(path)
     scaler = StandardScaler(inputCol="features", outputCol="scaledFeatures",
                             withStd=True, withMean=False)
 
