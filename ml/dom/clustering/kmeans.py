@@ -81,10 +81,12 @@ df2.printSchema()
 
 label = rdd2.map(lambda x: x[0])
 features = rdd2.map(lambda x: x[1])
+featureDF = features.toDF(columnNames)
 
 scaler = StandardScaler()
 scalerModel = scaler.fit(features)
 scaledFeatureRDD = scalerModel.transform(features)
+
 kmeans = KMeans()
 kmeansModel = kmeans.train(scaledFeatureRDD, kNodes)
 
